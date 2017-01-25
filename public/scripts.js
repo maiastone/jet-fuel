@@ -1,13 +1,13 @@
 
 
-$('url-submit').on('click', (e) => {
-  e.preventdefault();
+$('.url-submit').on('click', (e) => {
+  e.preventDefault();
   console.log("hello");
 });
 
 
 
-$('folder-submit').on('click', (e) => {
-  e.preventdefault();
+$('.folder-submit').on('click', (e) => {
+  e.preventDefault();
   console.log("hello");
 });
