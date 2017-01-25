@@ -4,7 +4,9 @@ body {
 }
 input {
   width: 33%;
-  height: 50px;
+  height: 30px;
+  margin: 20px;
+  border-radius: 20px;
 }
 label {
   padding-right: 10px;
