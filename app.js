@@ -9,20 +9,23 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('port', process.envPORT || 3000);
 
-app.locals.folders = {
-  0: 'folder one',
-  1: 'folder two'
-};
-
-app.locals.urls = {
-  0:{
-    folderid: '1',
+app.locals.folders = [
+  {
+    0: 'folder one'
+  },
+  {
+    1: 'folder two'
+  }
+]
+app.locals.urls = [
+  {
+    folderId: '1',
     url: 'www.google.com',
 		shorturl: 0,
     date: Date.now(),
     clickCount: 0
   }
-};
+]
 
 app.get('/', (request, response) => {
 });
@@ -47,7 +50,7 @@ app.get('/api/folders/:folderID', (request, response) => {
   if(!folder){
     response.sendStatus(404);
   }
-  response.json({folderID, folder})
+  response.json({folder})
 });
 
 app.post('/api/folders/:folderID', (request, response) => {
