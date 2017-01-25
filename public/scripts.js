@@ -1,4 +1,7 @@
+$( document ).ready(function() {
+	fetchBookmarks()
 
+});
 
 $('.url-submit').on('click', (e) => {
   e.preventDefault();
@@ -6,20 +9,47 @@ $('.url-submit').on('click', (e) => {
 });
 
 $('.folder-submit').on('click', (e) => {
-  fetchBookmarks();
   console.log("hello");
 });
+
+$(document).on('click', '.folder-listitem', function(e) {
+	var id = e.target.value
+	fetchFolder(id)
+})
 
 function fetchBookmarks () {
   axios.get('/api/folders')
   .then((response) => {
-		result = response.data.map(function(item) {
-			return item.title
+		response.data.map(function(folder) {
+			$('.folder-display').append(`<li>
+																		<button value=${folder.id}
+																				class='folder-listitem'>
+																				${folder.title}
+																					<span class="id">
+																						${folder.id}
+																					</span>
+																			</button>
+																		</li>`);
 			})
-		$('.folder-display').append(result);
-		console.log(result)
 		})
+
+
   .catch(function(error) {
   console.log('Error receiving bookmarks')
 })
+}
+
+function fetchFolder(id){
+	console.log(id)
+
+
+}
+
+function mapId(){
+	// axios.get('/api/folders')
+	// .then((response) => {
+	// 	response.data.map(function(item) {
+	// 		return {item.id: item.title}
+	// 	})
+	// }
 }
