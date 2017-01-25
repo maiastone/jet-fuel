@@ -13,10 +13,12 @@ $('.folder-submit').on('click', (e) => {
 function fetchBookmarks () {
   axios.get('/api/folders')
   .then((response) => {
-    debugger
-    console.log(response);
-    // $('.folder-display').append(response.);
-  })
+		result = response.data.map(function(item) {
+			return item.title
+			})
+		$('.folder-display').append(result);
+		console.log(result)
+		})
   .catch(function(error) {
   console.log('Error receiving bookmarks')
 })

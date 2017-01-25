@@ -11,10 +11,12 @@ app.set('port', process.envPORT || 3000);
 
 app.locals.folders = [
   {
-    0: 'folder one'
+    id: 1,
+		title: 'folder one'
   },
   {
-    1: 'folder two'
+    id: 2,
+		title: 'folder two'
   }
 ]
 app.locals.urls = [
