@@ -19,6 +19,16 @@ app.locals.folders = {
   1: 'folder two'
 };
 
+app.locals.urls = {
+  0:{
+    folderid: "1",
+    url: 'www.google.com',
+		shorturl: 0,
+    date: Date.now(),
+    clickCount: 0
+  }
+}
+
 app.get('/', (req, res) => {
 });
 
@@ -28,29 +38,46 @@ app.get('/api/folders', (request, response) => {
 
 app.post('/api/folders', (request, response) => {
 	const { folderName} = request.body;
-	const id = md5(folderName);
+	const folderID = md5(folderName);
 
-  app.locals.folders[id] = folderName;
-  console.log(id, folderName);
-  response.json({ id, folderName})
+  app.locals.folders[folderID] = folderName;
+  console.log(folderID, folderName);
+  response.json({ folderID, folderName})
 })
 
-app.get('/api/folders/:id', (request, response) => {
-  const {id} = request.params
-  const folder = app.locals.folders[id]
+app.get('/api/folders/:folderID', (request, response) => {
+  const {folderID} = request.params
+  const folder = app.locals.folders[folderID]
 
   if(!folder){
     response.sendStatus(404);
   }
-  response.json({id, folder})
+  response.json({folderID, folder})
 })
 
-app.post('/api/folders/:id', (request, response) => {
+app.post('/api/folders/:folderID', (request, response) => {
+	const {folderID} = request.params
 	const { url } = request.body;
 	const urlId = md5(url);
 
-	
+	app.locals.urls[urlId] = {
+		folderID,
+		url,
+		shorturl: urlId,
+		date: Date.now(),
+		clickCount: 0
+	}
+
+	response.json(app.locals.urls)
+
 });
+
+app.get('/api/folders/:folderid/:shorturl', (request, response) => {
+  const {folderid, shorturl} = request.params
+  const url = app.locals.urls[shorturl]
+
+  response.json(url)
+})
 
 app.listen(3000, () => {
   console.log('listening');
