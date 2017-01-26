@@ -27,18 +27,20 @@
 		<form action="/api/folders" method="post">
 		<label>
 			Add Folder:
-			<input class="add-folder-input" type="text" placeholder="Add a folder" name="folder"/>
+			<input class="add-folder-input" type="text" name="folder"/>
 		</label>
-		<input class="add-folder-button" type="submit" placeholder="Add Folder" value="Add Folder"/>
+		<input class="add-folder-button" type="submit" value="Add Folder"/>
 	</form>
 	<form>
 		<label action="/api/urls" method="post">
 			Add Link:
-			<input class="add-url-input" type="text" placeholder="Paste a link to shorten it" name="url"/>
+			<input class="add-url-input" type="text" name="url"/>
 			<select class="folder-dropdown"></select>
-			<input class="add-url-button" type="submit" value="Shorten link" />
+			<input class="add-url-button" type="submit" value="Add Link" />
 		</label>
 	</form>
+
+	 <div class="folders"></div>
 
     <section class='feature-container'>
       <label>Search</label>
@@ -53,7 +55,8 @@
     </section>
 
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="scripts.js"></script>
   </body>
