@@ -41,16 +41,17 @@ function fetchBookmarks () {
   .then((response) => {
 		response.data.map(function(folder) {
 			$('.folder-display').append(`
-        <li>
-    			<button
-              value=${folder.id}
-    					class='folder-listitem'>
-    			${folder.title}
-  						<span class="id">
-  							${folder.id}
-  						</span>
-    			</button>
-        </li>`);
+          <li class='folders'>
+      			<button
+                value=${folder.id}
+      					class='folder-listitem'>
+      			${folder.title}
+    						<span class="id">
+    							${folder.id}
+    						</span>
+      			</button>
+          </li>
+      `);
 			$('.folder-dropdown').append(`
 				<option id=${folder.id}>${folder.title}</option>
 				`);

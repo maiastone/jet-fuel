@@ -33,6 +33,16 @@ h1 {
   font-family: 'Diplomata', cursive;
   font-size: 100px;
 }
+
+h2 {
+  padding: 3%;
+}
+
+li {
+  list-style: none;
+  padding: 3%;
+}
+
 .input-container {
   display: flex;
   justify-content: space-around;
@@ -40,10 +50,12 @@ h1 {
   width: 100%;
   margin-top: 10%;
 }
+
 .ui-container {
   padding: 5% 10% 10% 10%;
 
 }
+
 .url-display {
   border-top: 3px solid white;
   margin-top: 10px;
@@ -52,4 +64,23 @@ h1 {
 
 .id {
 	display: none;
+}
+
+.folders {
+  display: inline;
+}
+
+.add-folder-button, .add-url-button {
+  width: 10%;
+  border-radius: 5px;
+  background-color: orange;
+  font-size: 16px;
+  border: none;
+}
+.add-folder-button:hover, .add-url-button:hover {
+  background-color: white;
+}
+
+.folder-dropdown {
+  height: 28px;
 }
