@@ -1,9 +1,9 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var shortid = require('shortid');
-const app = express();
+const express = require('express');
+const bodyParser = require('body-parser');
+const shortid = require('shortid');
 const path = require('path');
 const md5 = require('md5');
+const app = express();
 
 
 app.use(bodyParser.json());
@@ -21,11 +21,12 @@ app.locals.folders = [
 		title: 'folder two'
   }
 ]
+
 app.locals.urls = [
   {
-    folderId: '1',
+    folderID: '1',
     url: 'www.google.com',
-		shorturl: 0,
+		shorturl: shortid.generate(),
     date: Date.now(),
     clickCount: 0
   }
@@ -74,33 +75,59 @@ app.post('/api/folders/:folderID', (request, response) => {
 	response.json(app.locals.urls)
 });
 
+app.get('/api/folders/:folderid/:shorturl', (request, response) => {
+  const {folderid, shorturl} = request.params
+  const url = app.locals.urls[shorturl]
+
+  response.json(url)
+})
+
 app.get('/api/urls', (request, response) => {
   response.json(app.locals.urls)
 });
 
+app.get('/api/urls/:folderID', (request, response) => {
+  const {folderID} = request.params;
+  const { url } = request.body;
+  const urlId = md5(url);
+
+  app.locals.urls[urlId] = {
+    folderID,
+    url,
+    shorturl: urlId,
+    date: Date.now(),
+    clickCount: 0
+  }
+  response.json(app.locals.urls[urlId])
+  });
+
+
 app.post('/api/urls', (request, response) => {
   const { folderID } = request.params;
-  const { url } = request.body;
-  const id = md5(url)
+  const { url, shorturl } = request.body;
+  const id = md5(url);
 
   if (!url) {
    return response.status(400).send({
      error: 'no url provided'
    });
- }
+  }
 
   app.locals.urls.push({
-    url,
     id,
-  })
+    folderID,
+    url,
+    shorturl
+  });
 
   response.json({
+    id,
+    folderID,
     url,
-    id
-  })
+    shorturl
+  });
 
 });
-
 
 
 app.listen(3000, () => {
@@ -112,6 +139,6 @@ app.use(function (req, res, next) {
 });
 
 app.use(function (err, req, res, next) {
-  console.error(err.stack)
-  res.status(500).send('Something broke!')
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });

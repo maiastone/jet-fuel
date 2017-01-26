@@ -1,15 +1,10 @@
 
 $( document ).ready(function() {
 	fetchBookmarks()
-
 });
 
 $('.url-submit').on('click', (e) => {
   e.preventDefault();
-});
-
-$('.folder-submit').on('click', (e) => {
-
 });
 
 $(document).on('click', '.folder-listitem', function(e) {
@@ -20,25 +15,42 @@ $(document).on('click', '.folder-listitem', function(e) {
 $('.add-url-button').on('click', (e) => {
   e.preventDefault();
   let url = $('.add-url-input').val()
+  let folderID = $('option:selected').attr('id');
+  console.log(url, folderID)
+
   axios.post('/api/urls', {
     url,
+    folderID
   })
-
+  .then((response) => {
+    $('.url-display').append(`
+      <li>
+        ${url}
+      </li>
+    `);
+  })
+  .catch(function(error) {
+    console.log('error fetching urls');
+  })
+  $('.add-url-input').val('');
 });
+
 
 function fetchBookmarks () {
   axios.get('/api/folders')
   .then((response) => {
 		response.data.map(function(folder) {
-			$('.folder-display').append(`<li>
-																		<button value=${folder.id}
-																				class='folder-listitem'>
-																				${folder.title}
-																					<span class="id">
-																						${folder.id}
-																					</span>
-																			</button>
-																		</li>`);
+			$('.folder-display').append(`
+        <li>
+    			<button
+              value=${folder.id}
+    					class='folder-listitem'>
+    			${folder.title}
+  						<span class="id">
+  							${folder.id}
+  						</span>
+    			</button>
+        </li>`);
 			$('.folder-dropdown').append(`
 				<option id=${folder.id}>${folder.title}</option>
 				`);
@@ -54,13 +66,4 @@ function fetchFolder(id){
 	.then((response) => {
 		console.log(Object.values(response.data)[0].id, Object.values(response.data)[0].title )
 	})
-}
-
-function mapId(){
-	// axios.get('/api/folders')
-	// .then((response) => {
-	// 	response.data.map(function(item) {
-	// 		return {item.id: item.title}
-	// 	})
-	// }
 }
