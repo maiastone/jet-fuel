@@ -1,8 +1,10 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var shortid = require('shortid');
 const app = express();
 const path = require('path');
 const md5 = require('md5');
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -72,12 +74,34 @@ app.post('/api/folders/:folderID', (request, response) => {
 	response.json(app.locals.urls)
 });
 
-app.get('/api/folders/:folderid/:shorturl', (request, response) => {
-  const {folderid, shorturl} = request.params
-  const url = app.locals.urls[shorturl]
+app.get('/api/urls', (request, response) => {
+  response.json(app.locals.urls)
+});
 
-  response.json(url)
-})
+app.post('/api/urls', (request, response) => {
+  const { folderID } = request.params;
+  const { url } = request.body;
+  const id = md5(url)
+
+  if (!url) {
+   return response.status(400).send({
+     error: 'no url provided'
+   });
+ }
+
+  app.locals.urls.push({
+    url,
+    id,
+  })
+
+  response.json({
+    url,
+    id
+  })
+
+});
+
+
 
 app.listen(3000, () => {
   console.log('listening');

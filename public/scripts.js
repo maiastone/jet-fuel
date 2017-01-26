@@ -6,22 +6,29 @@ $( document ).ready(function() {
 
 $('.url-submit').on('click', (e) => {
   e.preventDefault();
-  console.log("hello");
 });
 
 $('.folder-submit').on('click', (e) => {
-  console.log("hello");
+
 });
 
 $(document).on('click', '.folder-listitem', function(e) {
-	var id = e.target.value
-	fetchFolder(id)
-})
+  var id = e.target.value
+  fetchFolder(id)
+});
+
+$('.add-url-button').on('click', (e) => {
+  e.preventDefault();
+  let url = $('.add-url-input').val()
+  axios.post('/api/urls', {
+    url,
+  })
+
+});
 
 function fetchBookmarks () {
   axios.get('/api/folders')
   .then((response) => {
-debugger
 		response.data.map(function(folder) {
 			$('.folder-display').append(`<li>
 																		<button value=${folder.id}
