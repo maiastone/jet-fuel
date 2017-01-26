@@ -12,7 +12,7 @@ function showFolders(jsonData) {
 function showURLs(jsonData) {
 	$('.urls').append(`
     <div class="url" id=${jsonData.id}>
-      <p class="individual-url">${jsonData.original_url}</p>
+      <a href="http://${jsonData.original_url}" class="individual-url">${jsonData.short_url}</a>
     </div>
   `)
 }
