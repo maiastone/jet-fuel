@@ -25,7 +25,7 @@ $('.add-url-button').on('click', (e) => {
   .then((response) => {
     $('.url-display').append(`
       <li>
-        ${url}
+      <a href='${url}'>short URL</a>
       </li>
     `);
   })

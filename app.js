@@ -86,15 +86,12 @@ app.get('/api/urls', (request, response) => {
   response.json(app.locals.urls)
 });
 
-app.get('/api/urls/:folderID', (request, response) => {
-  const {folderID} = request.params;
-  const { url } = request.body;
-  const urlId = md5(url);
+app.get('/api/folders/:folderID', (request, response) => {
+  const { folderID } = request.params;
 
-  app.locals.urls[urlId] = {
+  app.locals.folders[folderID] = {
     folderID,
     url,
-    shorturl: urlId,
     date: Date.now(),
     clickCount: 0
   }
