@@ -21,26 +21,24 @@ function fetchFolder(id){
 
 $(document).on('click', '.folder', function(e) {
 	e.preventDefault();
+	let id = e.target.value;
+	console.log(id);
 	axios.get('/api/urls/')
 
 	.then((response) => {
 		debugger;
-		// let response
-		// for (var in key)
-		// let urls = response[key].urls
-		// new array
-		// array.push -- all table data
 		for (let i=0; i<response.data.length; i++) {
+			if (id === response.data[i].folderID) {
 			let folderIds = (response.data[i].folderID)
-			$('.url-display').append(response.data[i].url);
+
+
+			$('.url-display').append(`<li>${response.data[i].url}</li>`);
 			console.log(response.data[i].url);
 		}
+	}
 	})
-
 });
-//
-// function displayFolderURL(urls) {
-// }
+
 
 $('.add-url-button').on('click', (e) => {
   e.preventDefault();
