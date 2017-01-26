@@ -1,7 +1,7 @@
 function showFolders(jsonData) {
   $('.folders').append(`
     <div class="folder" id=${jsonData.id}>
-      <p>${jsonData.folder_title}</p>
+      <a href="http://localhost:3000/api/folders/${jsonData.id}">${jsonData.folder_title}</a>
     </div>
   `)
   $('.folder-dropdown').append(`
@@ -12,7 +12,7 @@ function showFolders(jsonData) {
 function showURLs(jsonData) {
 	$('.urls').append(`
     <div class="url" id=${jsonData.id}>
-      <p>${jsonData.original_url}</p>
+      <p class="individual-url">${jsonData.original_url}</p>
     </div>
   `)
 }
@@ -56,4 +56,10 @@ $('.add-url-button').on('click', function(e) {
     },
 		success: showURLs
   })
+})
+
+$(document).on('click', '.individual-folder', function(e) {
+	debugger
+	var id = e.target.value
+
 })
