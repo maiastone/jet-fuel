@@ -1,3 +1,4 @@
+
 $( document ).ready(function() {
 	fetchBookmarks()
 
@@ -20,6 +21,7 @@ $(document).on('click', '.folder-listitem', function(e) {
 function fetchBookmarks () {
   axios.get('/api/folders')
   .then((response) => {
+debugger
 		response.data.map(function(folder) {
 			$('.folder-display').append(`<li>
 																		<button value=${folder.id}
@@ -30,19 +32,21 @@ function fetchBookmarks () {
 																					</span>
 																			</button>
 																		</li>`);
+			$('.folder-dropdown').append(`
+				<option id=${folder.id}>${folder.title}</option>
+				`);
 			})
-		})
-
-
+})
   .catch(function(error) {
   console.log('Error receiving bookmarks')
 })
 }
 
 function fetchFolder(id){
-	console.log(id)
-
-
+	axios.get(`/api/folders/${id}`)
+	.then((response) => {
+		console.log(Object.values(response.data)[0].id, Object.values(response.data)[0].title )
+	})
 }
 
 function mapId(){

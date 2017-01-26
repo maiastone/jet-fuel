@@ -45,14 +45,16 @@ app.post('/api/folders', (request, response) => {
   response.json({ folderID, folderName})
 });
 
-app.get('/api/folders/:folderID', (request, response) => {
-  const {folderID} = request.params;
-  const folder = app.locals.folders[folderID]
-
-  if(!folder){
+app.get('/api/folders/:id', (request, response) => {
+  const {id} = request.params;
+	var result = app.locals.folders.filter(function(folder) {
+		return folder.id === parseInt(id)
+	})
+	console.log(app.locals.folders)
+  if(!result){
     response.sendStatus(404);
   }
-  response.json({folder})
+  response.json(result)
 });
 
 app.post('/api/folders/:folderID', (request, response) => {
