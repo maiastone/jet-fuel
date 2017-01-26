@@ -1,7 +1,7 @@
 const bodyParser = require('body-parser');
+const express = require('express');
 const shortid = require('shortid');
 const path = require('path');
-const bodyParser = require('body-parser');
 const md5 = require('md5');
 const app = express();
 
@@ -38,10 +38,10 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 
 app.get('/api/folders', (request, response) => {
   response.json(app.locals.folders)
-})
+});
 
 app.post('/api/folders', (request, response) => {
-
+  console.log(request.body);
   const { folder } = request.body
   const id = md5(folder)
 
@@ -51,26 +51,28 @@ app.post('/api/folders', (request, response) => {
    });
  }
 
-  app.locals.folders.push({ folder_title: folder, id: id})
+  app.locals.folders.push({ title: folder, id: id})
 
   response.status(201).json({
-      folder_title: folder,
+      title: folder,
       id: id
    })
 });
 
 app.get('/api/folders/:id', (request, response) => {
   const { id } = request.params;
-  const result = app.locals.folders.filter(function(folder) { return folder.id === id })
+  console.log(id);
+  const result = app.locals.urls.filter(function(url) { return url.folderID === id.toString() })
 
   if(!result) { return response.sendStatus(404); }
 
-  response.json( result )
+  response.json( result );
 })
 
 app.get('/api/urls', (request, response) => {
   response.json(app.locals.urls)
 });
+
 
 app.get('/api/folders/:folderID', (request, response) => {
   const { folderID } = request.params;
@@ -82,13 +84,13 @@ app.get('/api/folders/:folderID', (request, response) => {
     clickCount: 0
   }
   response.json(app.locals.urls[urlId])
-  });
+});
 
 
 app.post('/api/urls', (request, response) => {
-  const { folderID } = request.params;
-  const { url, shorturl } = request.body;
+  const { url, folderID} = request.body;
   const id = md5(url);
+  const shorturl = shortid.generate();
 
   if (!url) {
    return response.status(400).send({
@@ -115,7 +117,7 @@ app.post('/api/urls', (request, response) => {
 
 app.listen(3000, () => {
   console.log('listening');
-
+});
 
 app.use(function (req, res, next) {
   res.status(404).send('Sorry, trouble finding that!')

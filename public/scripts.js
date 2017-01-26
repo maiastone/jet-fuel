@@ -6,10 +6,41 @@ $('.url-submit').on('click', (e) => {
   e.preventDefault();
 });
 
-$(document).on('click', '.folder-listitem', function(e) {
+$(document).on('click', '.folder', function(e) {
+	e.preventDefault();
   var id = e.target.value
   fetchFolder(id)
 });
+
+function fetchFolder(id){
+	axios.get(`/api/folders/${id}`)
+	.then((response) => {
+	 Object.values(response.data)[0].title;
+	})
+}
+
+$(document).on('click', '.folder', function(e) {
+	e.preventDefault();
+	axios.get('/api/urls/')
+
+	.then((response) => {
+		debugger;
+		// let response
+		// for (var in key)
+		// let urls = response[key].urls
+		// new array
+		// array.push -- all table data
+		for (let i=0; i<response.data.length; i++) {
+			let folderIds = (response.data[i].folderID)
+			$('.url-display').append(response.data[i].url);
+			console.log(response.data[i].url);
+		}
+	})
+
+});
+//
+// function displayFolderURL(urls) {
+// }
 
 $('.add-url-button').on('click', (e) => {
   e.preventDefault();
@@ -43,7 +74,7 @@ function fetchBookmarks () {
           <li class='folders'>
       			<button
                 value=${folder.id}
-      					class='folder-listitem'>
+      					class='folder'>
       			${folder.title}
     						<span class="id">
     							${folder.id}
@@ -59,11 +90,4 @@ function fetchBookmarks () {
   .catch(function(error) {
   console.log('Error receiving bookmarks')
 })
-}
-
-function fetchFolder(id){
-	axios.get(`/api/folders/${id}`)
-	.then((response) => {
-		console.log(Object.values(response.data)[0].id, Object.values(response.data)[0].title )
-	})
 }
