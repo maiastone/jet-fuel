@@ -57,9 +57,3 @@ $('.add-url-button').on('click', function(e) {
 		success: showURLs
   })
 })
-
-$(document).on('click', '.individual-folder', function(e) {
-	debugger
-	var id = e.target.value
-
-})
