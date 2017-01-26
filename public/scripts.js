@@ -9,6 +9,14 @@ function showFolders(jsonData) {
     `)
 }
 
+function showURLs(jsonData) {
+	$('.urls').append(`
+    <div class="url" id=${jsonData.id}>
+      <p>${jsonData.original_url}</p>
+    </div>
+  `)
+}
+
 $.get('/api/folders', function(data) {
   for(var key in data) {
     if (data.hasOwnProperty(key))
@@ -45,6 +53,7 @@ $('.add-url-button').on('click', function(e) {
     data: {
       url: $('.add-url-input').val(),
       folderId: $('option:selected').attr('id')
-    }
+    },
+		success: showURLs
   })
 })

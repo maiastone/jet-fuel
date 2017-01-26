@@ -46,11 +46,11 @@ app.post('/api/folders', (request, response) => {
 
 app.get('/api/folders/:id', (request, response) => {
   const { id } = request.params;
-  const folder = app.locals.folders.filter(function(folder) { return fol.id === id })
+  const result = app.locals.folders.filter(function(folder) { return folder.id === id })
 
-  if(!folder) { return response.sendStatus(404); }
+  if(!result) { return response.sendStatus(404); }
 
-  response.json({ folder })
+  response.json( result )
 })
 
 app.post('/api/urls', (request, response) => {
