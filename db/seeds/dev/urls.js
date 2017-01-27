@@ -5,19 +5,19 @@ exports.seed = function(knex, Promise) {
       knex('urls').insert({
         url: 'www.houzz.com',
         shortURL: 'short.com',
-        folderID: 100,
+        folderID: 1,
         created_at: new Date
       }),
       knex('urls').insert({
         url: 'www.twitter.com',
         shortURL: 'short.com',
-        folderID: 101,
+        folderID: 2,
         created_at: new Date
       }),
       knex('urls').insert({
         url: 'www.instagram.com',
         shortURL: 'short.com',
-        folderID: 102,
+        folderID: 3,
         created_at: new Date
       }),
     ]);

@@ -22,10 +22,10 @@ function fetchFolders () {
 				<option id=${folder.folderID}>${folder.title}</option>
 				`);
 			})
-})
+	})
   .catch(function(error) {
   console.log('Error receiving folders')
-})
+	})
 }
 
 $(document).on('click', '.folder', function(e) {
@@ -46,14 +46,13 @@ $(document).on('click', '.folder', function(e) {
 	let id = e.target.value;
 	axios.get('/api/urls/')
 	.then((response) => {
-		debugger;
 		console.log(id, 'id');
 		for (let i=0; i<response.data.length; i++) {
 			console.log(i, 'i');
 			if (parseInt(id) === response.data[i].folderID) {
 				console.log(response.data[i].folderID, 'folderID');
 			$('.url-display').append(`<li>${(response.data[i].url)}</li>`);
-		}
+			}
 		}
 	})
 });

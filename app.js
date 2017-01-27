@@ -5,7 +5,6 @@ const path = require('path');
 const md5 = require('md5');
 const app = express();
 
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -27,10 +26,9 @@ app.get('/api/urls', (request, response) => {
 
 app.post('/api/urls', (request, response) => {
   const { url, folderID } = request.body;
-  console.log(request.body);
   const shortURL = shortid.generate();
   database('urls').insert({ url, shortURL, folderID })
-  .then(function() {
+  .then(function(url) {
     database('urls').select()
   .then(function(url) {
     response.status(200).json(url);
@@ -44,25 +42,24 @@ app.post('/api/urls', (request, response) => {
 app.get('/api/folders', (request, response) => {
   database('folders').select()
   .then((folders) => {
-  response.status(200).json(folders)
+    response.status(200).json(folders)
   })
-.catch(function(error){
-  console.error('error fetching folders')
+  .catch(function(error){
+    console.error('error fetching folders')
   });
 });
 
-
 app.post('/api/folders', (request, response) => {
   const { folder } = request.body
-  const id = md5(folder)
-  console.log(folder)
+
   if (!folder) {
    return response.status(400).send({
      error: 'No folder provided'
    });
  }
 
- database('folders').insert(folder).then((folders) => {
+  database('folders').insert(folder)
+    .then(function(folders) {
      database('folders').select()
      .then(function(folders) {
        response.status(200).json(folders);
@@ -70,13 +67,12 @@ app.post('/api/folders', (request, response) => {
      .catch(function(error) {
        console.error('database error')
      })
-   })
- });
+    })
+});
 
-
-app.get('/api/folders/:id', (request, response) => {
-  const { id } = request.params
-  database('folders').select().table('urls').where('id', id)
+app.get('/api/folders/:folderID', (request, response) => {
+  const { folderID } = request.params
+  database('folders').select().table('urls').where('folderID', folderID)
     .then(function(urls) {
       response.status(200).json(urls);
     })
