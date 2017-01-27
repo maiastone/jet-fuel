@@ -4,11 +4,12 @@ exports.seed = function(knex, Promise) {
     return Promise.all([
       knex('folders').insert({
         title: 'Folder 1',
-        created_at: new Date
       }),
       knex('folders').insert({
         title: 'Folder 2',
-        created_at: new Date
+      }),
+      knex('folders').insert({
+        title: 'Folder 3',
       })
     ]);
   })

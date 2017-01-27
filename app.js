@@ -15,135 +15,75 @@ const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
-
-// app.locals.folders = [
-//   {
-//     id: 1,
-// 		title: 'folder one'
-//   },
-//   {
-//     id: 2,
-// 		title: 'folder two'
-//   }
-// ]
-//
-// app.locals.urls = [
-//   {
-//     folderID: '1',
-//     url: 'www.google.com',
-// 		shorturl: shortid.generate(),
-//     date: Date.now(),
-//     clickCount: 0
-//   }
-// ]
 app.get('/api/urls', (request, response) => {
   database('urls').select()
-          .then(function(secrets) {
-            response.status(200).json(secrets);
-          })
-          .catch(function(error) {
-            console.error('somethings wrong with db')
-          });
+  .then(function(secrets) {
+    response.status(200).json(secrets);
+  })
+  .catch(function(error) {
+    console.error('error fetching urls')
+  });
 })
 
 app.post('/api/urls', (request, response) => {
   const { url, folderID } = request.body;
-  const shorturl = shortid.generate();
-
-  database('urls').insert(urls)
+  console.log(request.body);
+  const shortURL = shortid.generate();
+  database('urls').insert({ url, shortURL, folderID })
   .then(function() {
     database('urls').select()
-            .then(function(secrets) {
-              response.status(200).json(secrets);
-            })
-            .catch(function(error) {
-              console.error('somethings wrong with db')
-            });
+  .then(function(url) {
+    response.status(200).json(url);
+  })
+  .catch(function(error) {
+    console.error('error posting urls')
+  });
   })
 })
 
-app.set('port', process.env.PORT || 3000);
-
-app.use('/', express.static(path.join(__dirname, 'public')));
-
 app.get('/api/folders', (request, response) => {
-  response.json(app.locals.folders)
+  database('folders').select()
+  .then((folders) => {
+  response.status(200).json(folders)
+  })
+.catch(function(error){
+  console.error('error fetching folders')
+  });
 });
 
+
 app.post('/api/folders', (request, response) => {
-  console.log(request.body);
   const { folder } = request.body
   const id = md5(folder)
-
+  console.log(folder)
   if (!folder) {
-   return response.status(422).send({
+   return response.status(400).send({
      error: 'No folder provided'
    });
  }
 
-  app.locals.folders.push({ title: folder, id: id})
-
-  response.status(201).json({
-      title: folder,
-      id: id
+ database('folders').insert(folder).then((folders) => {
+     database('folders').select()
+     .then(function(folders) {
+       response.status(200).json(folders);
+     })
+     .catch(function(error) {
+       console.error('database error')
+     })
    })
-});
+ });
+
 
 app.get('/api/folders/:id', (request, response) => {
-  const { id } = request.params;
-  console.log(id);
-  const result = app.locals.urls.filter(function(url) { return url.folderID === id.toString() })
-
-  if(!result) { return response.sendStatus(404); }
-
-  response.json( result );
+  const { id } = request.params
+  database('folders').select().table('urls').where('id', id)
+    .then(function(urls) {
+      response.status(200).json(urls);
+    })
+    .catch(function(error) {
+      console.error(error)
+    })
 })
-
-app.get('/api/urls', (request, response) => {
-  response.json(app.locals.urls)
-});
-
-
-app.get('/api/folders/:folderID', (request, response) => {
-  const { folderID } = request.params;
-
-  app.locals.folders[folderID] = {
-    folderID,
-    url,
-    date: Date.now(),
-    clickCount: 0
-  }
-  response.json(app.locals.urls[urlId])
-});
-
-
-// app.post('/api/urls', (request, response) => {
-//   const { url, folderID} = request.body;
-//   const id = md5(url);
-//   const shorturl = shortid.generate();
-//
-//   if (!url) {
-//    return response.status(400).send({
-//      error: 'no url provided'
-//    });
-//   }
-//
-//   app.locals.urls.push({
-//     id,
-//     folderID,
-//     url,
-//     shorturl
-//   });
-//
-//   response.json({
-//     id,
-//     folderID,
-//     url,
-//     shorturl
-//   });
-//
-// });
-//
 
 app.listen(3000, () => {
   console.log('listening');

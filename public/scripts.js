@@ -1,10 +1,32 @@
 $( document ).ready(function() {
-	fetchBookmarks()
+	fetchFolders()
 });
 
-$('.url-submit').on('click', (e) => {
-  e.preventDefault();
-});
+function fetchFolders () {
+  axios.get('/api/folders')
+  .then((response) => {
+		response.data.map(function(folder) {
+			$('.folder-display').append(`
+          <li class='folders'>
+      			<button
+                value=${folder.folderID}
+      					class='folder'>
+      			${folder.title}
+    						<span class="id">
+    							${folder.folderID}
+    						</span>
+      			</button>
+          </li>
+      `);
+			$('.folder-dropdown').append(`
+				<option id=${folder.folderID}>${folder.title}</option>
+				`);
+			})
+})
+  .catch(function(error) {
+  console.log('Error receiving folders')
+})
+}
 
 $(document).on('click', '.folder', function(e) {
 	e.preventDefault();
@@ -25,12 +47,13 @@ $(document).on('click', '.folder', function(e) {
 	axios.get('/api/urls/')
 	.then((response) => {
 		debugger;
+		console.log(id, 'id');
 		for (let i=0; i<response.data.length; i++) {
-			if (id === response.data[i].folderID) {
-			let folderIds = (response.data[i].folderID);
-			$('.url-display').append(`<li>${response.data[i].url}</li>`);
-			console.log(response.data[i].url);
-			}
+			console.log(i, 'i');
+			if (parseInt(id) === response.data[i].folderID) {
+				console.log(response.data[i].folderID, 'folderID');
+			$('.url-display').append(`<li>${(response.data[i].url)}</li>`);
+		}
 		}
 	})
 });
@@ -58,30 +81,3 @@ $('.add-url-button').on('click', (e) => {
   })
   $('.add-url-input').val('');
 });
-
-
-function fetchBookmarks () {
-  axios.get('/api/folders')
-  .then((response) => {
-		response.data.map(function(folder) {
-			$('.folder-display').append(`
-          <li class='folders'>
-      			<button
-                value=${folder.id}
-      					class='folder'>
-      			${folder.title}
-    						<span class="id">
-    							${folder.id}
-    						</span>
-      			</button>
-          </li>
-      `);
-			$('.folder-dropdown').append(`
-				<option id=${folder.id}>${folder.title}</option>
-				`);
-			})
-})
-  .catch(function(error) {
-  console.log('Error receiving bookmarks')
-})
-}
