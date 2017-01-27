@@ -11,26 +11,56 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('port', process.envPORT || 3000);
 
-app.locals.folders = [
-  {
-    id: 1,
-		title: 'folder one'
-  },
-  {
-    id: 2,
-		title: 'folder two'
-  }
-]
+const environment = process.env.NODE_ENV || 'development';
+const configuration = require('./knexfile')[environment];
+const database = require('knex')(configuration);
 
-app.locals.urls = [
-  {
-    folderID: '1',
-    url: 'www.google.com',
-		shorturl: shortid.generate(),
-    date: Date.now(),
-    clickCount: 0
-  }
-]
+
+// app.locals.folders = [
+//   {
+//     id: 1,
+// 		title: 'folder one'
+//   },
+//   {
+//     id: 2,
+// 		title: 'folder two'
+//   }
+// ]
+//
+// app.locals.urls = [
+//   {
+//     folderID: '1',
+//     url: 'www.google.com',
+// 		shorturl: shortid.generate(),
+//     date: Date.now(),
+//     clickCount: 0
+//   }
+// ]
+app.get('/api/urls', (request, response) => {
+  database('urls').select()
+          .then(function(secrets) {
+            response.status(200).json(secrets);
+          })
+          .catch(function(error) {
+            console.error('somethings wrong with db')
+          });
+})
+
+app.post('/api/urls', (request, response) => {
+  const { url, folderID } = request.body;
+  const shorturl = shortid.generate();
+
+  database('urls').insert(urls)
+  .then(function() {
+    database('urls').select()
+            .then(function(secrets) {
+              response.status(200).json(secrets);
+            })
+            .catch(function(error) {
+              console.error('somethings wrong with db')
+            });
+  })
+})
 
 app.set('port', process.env.PORT || 3000);
 
@@ -87,33 +117,33 @@ app.get('/api/folders/:folderID', (request, response) => {
 });
 
 
-app.post('/api/urls', (request, response) => {
-  const { url, folderID} = request.body;
-  const id = md5(url);
-  const shorturl = shortid.generate();
-
-  if (!url) {
-   return response.status(400).send({
-     error: 'no url provided'
-   });
-  }
-
-  app.locals.urls.push({
-    id,
-    folderID,
-    url,
-    shorturl
-  });
-
-  response.json({
-    id,
-    folderID,
-    url,
-    shorturl
-  });
-
-});
-
+// app.post('/api/urls', (request, response) => {
+//   const { url, folderID} = request.body;
+//   const id = md5(url);
+//   const shorturl = shortid.generate();
+//
+//   if (!url) {
+//    return response.status(400).send({
+//      error: 'no url provided'
+//    });
+//   }
+//
+//   app.locals.urls.push({
+//     id,
+//     folderID,
+//     url,
+//     shorturl
+//   });
+//
+//   response.json({
+//     id,
+//     folderID,
+//     url,
+//     shorturl
+//   });
+//
+// });
+//
 
 app.listen(3000, () => {
   console.log('listening');

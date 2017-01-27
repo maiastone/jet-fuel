@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/maiastone/jet-fuel#readme",
   "dependencies": {
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "knex": "^0.12.6",
+    "pg": "^6.1.2"
   },
   "devDependencies": {
     "body-parser": "^1.16.0",
