@@ -51,7 +51,9 @@ $(document).on('click', '.folder', function(e) {
 			console.log(i, 'i');
 			if (parseInt(id) === response.data[i].folderID) {
 				console.log(response.data[i].folderID, 'folderID');
-			$('.url-display').append(`<li>${(response.data[i].url)}</li>`);
+			$('.url-display').append(`<li>
+				<a href='http://${(response.data[i].url)}' target='_blank'>http://jet.ly/${response.data[i].shortURL}</a>
+				</li>`);
 			}
 		}
 	})
@@ -62,16 +64,16 @@ $('.add-url-button').on('click', (e) => {
   e.preventDefault();
   let url = $('.add-url-input').val()
   let folderID = $('option:selected').attr('id');
-  console.log(url, folderID)
 
   axios.post('/api/urls', {
     url,
     folderID
   })
   .then((response) => {
+		console.log(response);
     $('.url-display').append(`
       <li>
-      <a href='${url}'>short URL</a>
+      <a href='http://${url}' target='_blank'>shortURL</a>
       </li>
     `);
   })
