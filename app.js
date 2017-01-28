@@ -51,14 +51,12 @@ app.get('/api/folders', (request, response) => {
 
 app.post('/api/folders', (request, response) => {
   const { title } = request.body
-  console.log(request.body);
- //  if (!folder) {
- //   return response.status(400).send({
- //     error: 'No folder provided'
- //   });
- // }
+  if (!request.body) {
+   return response.status(400).send({
+     error: 'No folder provided'
+   });
+ }
 
- console.log({title});
   database('folders').insert({title})
     .then(function(folder) {
      database('folders').select()
