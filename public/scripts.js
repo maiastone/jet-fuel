@@ -46,11 +46,8 @@ $(document).on('click', '.folder', function(e) {
 	let id = e.target.value;
 	axios.get('/api/urls/')
 	.then((response) => {
-		console.log(id, 'id');
 		for (let i=0; i<response.data.length; i++) {
-			console.log(i, 'i');
 			if (parseInt(id) === response.data[i].folderID) {
-				console.log(response.data[i].folderID, 'folderID');
 			$('.url-display').append(`<li>
 				<a href='http://${(response.data[i].url)}' target='_blank'>http://jet.ly/${response.data[i].shortURL}</a>
 				</li>`);
@@ -70,12 +67,16 @@ $('.add-url-button').on('click', (e) => {
     folderID
   })
   .then((response) => {
-		console.log(response);
+		console.log(response.data[0].url);
+		for (let i=0; i<response.data.length; i++) {
+			if (url === response.data[i].url) {
     $('.url-display').append(`
       <li>
-      <a href='http://${url}' target='_blank'>shortURL</a>
+      <a href='http://${url}' target='_blank'>http://jet.ly/${response.data[i].shortURL}</a>
       </li>
     `);
+			}
+		}
   })
   .catch(function(error) {
     console.log('error fetching urls');
