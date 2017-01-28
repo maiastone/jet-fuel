@@ -3,7 +3,7 @@ exports.up = function(knex, Promise) {
     knex.schema.table('urls', function(table){
       table.renameColumn('folder_folderID', 'folderID');
     })
-  ])
+  ]);
 };
 
 exports.down = function(knex, Promise) {
@@ -11,5 +11,5 @@ exports.down = function(knex, Promise) {
     knex.schema.table('urls', function(table){
     table.renameColumn('folderID', 'folder_folderID');
     })
-  ])
+  ]);
 };
