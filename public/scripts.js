@@ -34,9 +34,11 @@ $(document).on('click', '.folder', function(e) {
   fetchFolder(id)
 });
 
-function fetchFolder(id){
-	axios.get(`/api/folders/${id}`)
+function fetchFolder(folderID){
+	console.log(folderID);
+	axios.get(`/api/folders/${folderID}`)
 	.then((response) => {
+		console.log(response.data);
 	 Object.values(response.data)[0].title;
 	})
 }
@@ -49,7 +51,7 @@ $(document).on('click', '.folder', function(e) {
 		for (let i=0; i<response.data.length; i++) {
 			if (parseInt(id) === response.data[i].folderID) {
 			$('.url-display').append(`<li>
-				<a href='http://${(response.data[i].url)}' target='_blank'>http://jet.ly/${response.data[i].shortURL}</a>
+				<a href='${(response.data[i].url)}' target='_blank'>https://jet.ly/${response.data[i].shortURL}</a>
 				</li>`);
 			}
 		}
