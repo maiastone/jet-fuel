@@ -67,7 +67,6 @@ $('.add-url-button').on('click', (e) => {
     folderID
   })
   .then((response) => {
-		console.log(response.data[0].url);
 		for (let i=0; i<response.data.length; i++) {
 			if (url === response.data[i].url) {
     $('.url-display').append(`

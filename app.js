@@ -50,19 +50,20 @@ app.get('/api/folders', (request, response) => {
 });
 
 app.post('/api/folders', (request, response) => {
-  const { folder } = request.body
+  const { title } = request.body
+  console.log(request.body);
+ //  if (!folder) {
+ //   return response.status(400).send({
+ //     error: 'No folder provided'
+ //   });
+ // }
 
-  if (!folder) {
-   return response.status(400).send({
-     error: 'No folder provided'
-   });
- }
-
-  database('folders').insert(folder)
-    .then(function(folders) {
+ console.log({title});
+  database('folders').insert({title})
+    .then(function(folder) {
      database('folders').select()
-     .then(function(folders) {
-       response.status(200).json(folders);
+     .then(function(folder) {
+       response.status(200).json(folder);
      })
      .catch(function(error) {
        console.error('database error')
