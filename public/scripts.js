@@ -34,9 +34,9 @@ $(document).on('click', '.folder', function(e) {
   fetchFolder(id)
 });
 
-function fetchFolder(folderID){
-	console.log(folderID);
-	axios.get(`/api/folders/${folderID}`)
+function fetchFolder(id){
+	console.log(id);
+	axios.get(`/api/folders/${id}`)
 	.then((response) => {
 		console.log(response.data);
 	 Object.values(response.data)[0].title;
@@ -66,14 +66,15 @@ $('.add-url-button').on('click', (e) => {
 
   axios.post('/api/urls', {
     url,
-    folderID
+    folderID,
   })
   .then((response) => {
+		console.log(response);
 		for (let i=0; i<response.data.length; i++) {
 			if (url === response.data[i].url) {
     $('.url-display').append(`
       <li>
-      <a href='http://${url}' target='_blank'>http://jet.ly/${response.data[i].shortURL}</a>
+      <a href='${url}' target='_blank'>http://jet.ly/${response.data[i].shortURL}</a>
       </li>
     `);
 			}
