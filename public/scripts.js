@@ -28,12 +28,25 @@ function fetchFolders () {
 	})
 }
 
-$(document).on('click', '.folder', function(e) {
+$('.add-folder-button').on('click', (e) => {
 	e.preventDefault();
-  var folderID = e.target.value
-  fetchFolder(folderID)
-
+	let title = $('.add-folder-input').val();
+	let folderID = Math.floor((Math.random() * 100) + 1);
+	console.log(folderID);
+	axios.post('/api/folders', {
+		title,
+		folderID
+	})
+	.then((response) => {
+		console.log(response);
+		$('folder-display').append(response.data)
+	})
+	.catch(function(error) {
+		console.log('error posting folder');
+	})
+	$('.add-folder-input').val('');
 });
+
 
 function fetchFolder(folderID){
 	axios.get(`/api/folders/${folderID}`)
@@ -79,7 +92,7 @@ $('.add-url-button').on('click', (e) => {
 		}
   })
   .catch(function(error) {
-    console.log('error fetching urls');
+    console.log('error posting urls');
   })
   $('.add-url-input').val('');
 });
