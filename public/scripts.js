@@ -30,13 +30,13 @@ function fetchFolders () {
 
 $(document).on('click', '.folder', function(e) {
 	e.preventDefault();
-  var id = e.target.value
-  fetchFolder(id)
-	
+  var folderID = e.target.value
+  fetchFolder(folderID)
+
 });
 
-function fetchFolder(id){
-	axios.get(`/api/folders/${id}`)
+function fetchFolder(folderID){
+	axios.get(`/api/folders/${folderID}`)
 	.then((response) => {
 	 Object.values(response.data)[0].title;
 	})

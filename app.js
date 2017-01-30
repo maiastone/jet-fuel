@@ -31,7 +31,8 @@ app.get('/api/urls', (request, response) => {
 app.post('/api/urls', (request, response) => {
   const { url, folderID } = request.body;
   const shortURL = shortid.generate();
-  database('urls').insert({ url, shortURL, folderID })
+  const id = Date.now();
+  database('urls').insert({ id, url, shortURL, folderID })
   .then(function(url) {
     database('urls').select()
   .then(function(url) {
