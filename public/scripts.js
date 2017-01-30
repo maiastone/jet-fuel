@@ -35,10 +35,8 @@ $(document).on('click', '.folder', function(e) {
 });
 
 function fetchFolder(id){
-	console.log(id);
 	axios.get(`/api/folders/${id}`)
 	.then((response) => {
-		console.log(response.data);
 	 Object.values(response.data)[0].title;
 	})
 }
@@ -69,7 +67,6 @@ $('.add-url-button').on('click', (e) => {
     folderID,
   })
   .then((response) => {
-		console.log(response);
 		for (let i=0; i<response.data.length; i++) {
 			if (url === response.data[i].url) {
     $('.url-display').append(`
