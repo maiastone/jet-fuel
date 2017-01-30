@@ -32,6 +32,7 @@ $(document).on('click', '.folder', function(e) {
 	e.preventDefault();
   var id = e.target.value
   fetchFolder(id)
+	
 });
 
 function fetchFolder(id){
