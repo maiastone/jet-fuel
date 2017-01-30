@@ -14,6 +14,10 @@ const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
+app.get('/', (request, response) => {
+  response.sendfile(_dirname + '/public/index.html')
+})
+
 app.get('/api/urls', (request, response) => {
   database('urls').select()
   .then(function(secrets) {
