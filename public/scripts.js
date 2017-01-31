@@ -37,12 +37,17 @@ $('.add-folder-button').on('click', (e) => {
 		folderID
 	})
 	.then((response) => {
-		$('folder-display').append(`<button
-																class='folder'
-																>
-																${title}
-																</button>
-		`)
+		$('.folder-display').append(`<button
+						value=${folderID}
+						class='folder'>
+						${title}
+						<span class="id">
+							${folderID}
+						</span>
+						</button>`);
+		$('.folder-dropdown').append(`
+			<option id=${folderID}>${title}</option>
+			`);
 	})
 	.catch(function(error) {
 		console.log('error posting folder');
