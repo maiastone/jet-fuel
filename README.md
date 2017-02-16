@@ -25,3 +25,6 @@ Clone down the repository. You will need 'node' and 'npm' installed.
 ###Local App:
 
 'localhost:3000'
+
+
+[![CircleCI](https://circleci.com/gh/maiastone/jet-fuel.svg?style=svg)](https://circleci.com/gh/maiastone/jet-fuel)

@@ -1,0 +1,10 @@
+deployment:
+  staging:
+    branch: staging
+    heroku:
+      appname: jetly-staging
+
+  production:
+    branch: master
+    heroku:
+      appname: jetly-production
